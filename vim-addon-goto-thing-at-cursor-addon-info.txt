@@ -1,0 +1,11 @@
+{
+  "name" : "vim-addon-goto-thing-at-cursor",
+  "version" : "0.0",
+  "author" : "Marc Weber <marco-oweber@gmx.de>",
+  "maintainer" : "Marc Weber <marco-oweber@gmx.de>",
+  "repository" : {"type": "git", "url": "git://github.com/MarcWeber/vim-addon-goto-thing-at-cursor.git"},
+  "dependencies" : {
+    "tlib": {}
+  },
+  "description" : "extend Vim's gf mapping"
+}

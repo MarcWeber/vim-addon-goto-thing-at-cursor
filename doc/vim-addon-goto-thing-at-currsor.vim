@@ -1,4 +1,4 @@
-*vim-plugin-goto-thing-at-cursor.txt*
+*vim-addon-goto-thing-at-cursor.txt*
 
 Add your own handlers to gf mapping.
 This way you can jump to tags, git hashs, class names etc.
