@@ -9,10 +9,11 @@
 " if there is one match which has break set all matches which don't have this
 " flag set are disregarded
 function! on_thing_handler#AddOnThingHandler(scope, handler)
-  if !exists(a:scope.':on_thing_handler')
-    exec 'let '.a:scope.':on_thing_handler = []'
+  let v = a:scope.':on_thing_handler'
+  if !exists(v)
+    exec 'let '.v.' = []'
   endif
-  exec 'call add('.a:scope.':on_thing_handler,'.string(a:handler).')'
+  exec ' if index('.v.', a:handler) == -1 | call add('.v.',a:handler) | endif'
 endfunction
 
 function! s:DoesFileExist(value)
