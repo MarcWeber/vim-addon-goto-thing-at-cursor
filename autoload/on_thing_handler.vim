@@ -20,7 +20,11 @@ function! s:DoesFileExist(value)
   if type(a:value) == type("")
     let filename = a:value
   elseif type(a:value) == type({})
-    let filename = a:value['filename']
+    if has_key(a:value, 'filename')
+      let filename = a:value['filename']
+    else
+      return 1
+    endif
   else
     let filename = a:value[0]
   endif
@@ -36,8 +40,13 @@ function! s:GotoLocation(value)
     let filename = a:value
     let line_nr = -1
   elseif type(a:value) == type({})
-    let filename = a:value['filename']
-    let line_nr = get(a:value, 'line_nr', -1)
+    if (has_key(a:value, 'exec'))
+      exec a:value['exec']
+      return
+    else
+      let filename = a:value['filename']
+      let line_nr = get(a:value, 'line_nr', -1)
+    endif
   else
     let filename = a:value[0]
     let line_nr = a:value[1]
@@ -72,7 +81,7 @@ function! s:ToItemStr(value)
 endfunction
 
 fun! s:GotoFile(list)
-  let list_shown = map(copy(a:list),'type(v:val) == type({}) ? ((has_key(v:val,"line_nr") ? v:val["info"]." " : "").v:val["filename"].(has_key(v:val,"line_nr") ? ":".v:val["line_nr"] : "")) : v:val')
+  let list_shown = map(copy(a:list),'type(v:val) == type({}) ? ((has_key(v:val,"info") ? v:val["info"]." " : "").(has_key(v:val,"filename") ? v:val["filename"] : "").(has_key(v:val,"line_nr") ? ":".v:val["line_nr"] : "")) : v:val')
   echo list_shown
   let index = tlib#input#List("i","choose file to jump to", list_shown)
   if index != ''
