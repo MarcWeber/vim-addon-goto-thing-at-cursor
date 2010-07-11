@@ -80,9 +80,8 @@ function! s:ToItemStr(value)
   endif
 endfunction
 
-fun! s:GotoFile(list)
+fun! on_thing_handler#GotoFile(list)
   let list_shown = map(copy(a:list),'type(v:val) == type({}) ? ((has_key(v:val,"info") ? v:val["info"]." " : "").(has_key(v:val,"filename") ? v:val["filename"] : "").(has_key(v:val,"line_nr") ? ":".v:val["line_nr"] : "")) : v:val')
-  echo list_shown
   let index = tlib#input#List("i","choose file to jump to", list_shown)
   if index != ''
     call s:GotoLocation(a:list[index-1])
@@ -116,9 +115,11 @@ function! on_thing_handler#HandleOnThing()
 
   " always use default handler as well
   call extend(possibleFiles, s:DefaultHandler())
+  call map(possibleFiles,'string(v:val)')
+  " Uniq can only cope with strings. So serialize dicts which contain line
+  " number
   let possibleFiles = tlib#list#Uniq(possibleFiles)
-  
-
+  call map(possibleFiles,'eval(v:val)')
 
   " one has break set?
   let breaks = filter(copy(possibleFiles), 'type(v:val) == type({}) && get(v:val,"break") == 1')
@@ -129,8 +130,8 @@ function! on_thing_handler#HandleOnThing()
   " if one file exists use that
   let existingFiles = filter(deepcopy(possibleFiles), 's:DoesFileExist(v:val)')
 
-  if !s:GotoFile(existingFiles)
-    call s:GotoFile(possibleFiles)
+  if !on_thing_handler#GotoFile(existingFiles)
+    call on_thing_handler#GotoFile(possibleFiles)
   endif
 endfunction 
 
