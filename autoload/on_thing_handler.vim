@@ -4,7 +4,7 @@
 "
 " handler returns one of
 " a afile path:  "filename.file"
-" a dict: { 'break': 1, 'filename' : file [, 'line_nr' line nr ] [, 'info' : 'shown before filename'] }
+" a dict: { ['tob': 0 / 1,] 'break': 1, 'filename' : file [, 'line_nr' line nr ] [, 'info' : 'shown before filename'] }
 "
 " if there is one match which has break set all matches which don't have this
 " flag set are disregarded
@@ -32,8 +32,10 @@ function! s:DoesFileExist(value)
 endif
 endfunction
 
+" line_nr may be /.../ pattern as found in tag files
 function! s:GotoLocation(value)
   if type(a:value) == type("")
+    " file without location
     if a:value == ""
       return 
     endif
@@ -91,6 +93,12 @@ fun! on_thing_handler#GotoFile(list)
   endif
 endf
 
+fun! s:Sort(a,b)
+  let t1 = type(a:a) != type('') && get(a:a, 'top', 0)
+  let t2 = type(a:a) != type('') && get(a:a, 'top', 0)
+  return t1 <= t2
+endf
+
 "|func  Use this function in your mapping in a ftplugin file like this:
 "|code  noremap gf :call tovl#ui#open_thing_at_cursor#HandleOnThing()<cr>
 function! on_thing_handler#HandleOnThing()
@@ -128,6 +136,7 @@ function! on_thing_handler#HandleOnThing()
   endif
 
   " if one file exists use that
+  call sort(possibleFiles, "s:Sort")
   let existingFiles = filter(deepcopy(possibleFiles), 's:DoesFileExist(v:val)')
 
   if !on_thing_handler#GotoFile(existingFiles)

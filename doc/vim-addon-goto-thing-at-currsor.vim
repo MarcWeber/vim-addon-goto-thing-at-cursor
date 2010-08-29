@@ -14,5 +14,9 @@ Adding your own handlers: >
   call add(g:on_thing_handler)
 <
 
+In ftplugin/filetype.vim: >
+  call on_thing_handler#AddOnThingHandler('b', funcref#Function('haxe#gfHandler'))
+<
+
 
 
