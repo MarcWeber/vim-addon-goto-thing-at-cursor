@@ -4,7 +4,7 @@
 "
 " handler returns one of
 " a afile path:  "filename.file"
-" a dict: { ['tob': 0 / 1,] 'break': 1, 'filename' : file [, 'line_nr' line nr ] [, 'info' : 'shown before filename'] }
+" a dict: { 'break': 1, 'filename' : file [, 'line_nr' line nr ] [, 'info' : 'shown before filename'] }
 "
 " if there is one match which has break set all matches which don't have this
 " flag set are disregarded

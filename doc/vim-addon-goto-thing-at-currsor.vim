@@ -1,22 +1,39 @@
 *vim-addon-goto-thing-at-cursor.txt*
 
-Add your own handlers to gf mapping.
+Add your own handlers to [\]gf mapping.
 This way you can jump to tags, git hashs, class names etc.
+
+gf/gF also have the issue that you can't open files which don't exist yet.
+This plugin doesn't care whether a file exists or not (its biased if one exists though)
 
 ------------------------------------------------------------------------------
 customization ~
 You can use another lhs of a mapping this way: >
   let g['config']['goto-thing-handler-mapping-lhs'] = 'gf'
 >
->
-Adding your own handlers: >
 
-  call add(g:on_thing_handler)
-<
-
-In ftplugin/filetype.vim: >
+Adding your own handlers. Example vim files only:
+in ftplugin/filetype.vim: >
   call on_thing_handler#AddOnThingHandler('b', funcref#Function('haxe#gfHandler'))
 <
 
+You can replace 'b' by 'g' to add a handler to all buffers.
 
+A function such as haxe#gfHandler should return either
+- a simple string (filename)
+- a dict:
+  a dict: { 'break': 1, 'filename' : file [, 'line_nr' line nr ] [, 'info' : 'shown before filename'] }
+  if break is set to 1 then this match will win. If multiple results have break set the user will be prompted.
+  The idea is that you can return multiple paths and if one exiists it is
+  opened, if it does not you'll be prompted about which one to open
 
+plugins using this plugin:
+- vim-addon-nix: going to include files
+- vim-dev: jump to function definitions without tag files
+- vim-addon-git: my simple git plugin (you can jump to filepaths dropping a/ b/ in diffs and to hashes)
+...
+
+A very similar idea has been implemented in vim-addon-toggle-buffer. However
+its purpose is to toggle files by context. Examples are
+- C/C++ .h and .c files
+- Vim: find .vim files in the same plugin directory (eg toggle autoload and plugin .vim files)
