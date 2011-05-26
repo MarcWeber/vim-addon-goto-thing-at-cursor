@@ -19,7 +19,7 @@ in ftplugin/filetype.vim: >
 
 You can replace 'b' by 'g' to add a handler to all buffers.
 
-A function such as haxe#gfHandler should return either
+A function such as haxe#gfHandler should return a list of either
 - a simple string (filename)
 - a dict:
   a dict: { 'break': 1, 'filename' : file [, 'line_nr' line nr ] [, 'info' : 'shown before filename'] }
