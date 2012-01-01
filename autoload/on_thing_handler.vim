@@ -145,8 +145,13 @@ function! on_thing_handler#HandleOnThing()
 endfunction 
 
 function! s:DefaultHandler()
+  let r = []
   let s = expand('<cfile>')
-  return s == "" ? [] : [s]
+  let cond_append = 'if s != "" | call add(r,s)| endif'
+  exec cond_append
+  let s = matchstr(s, '=\zs.*')
+  exec cond_append
+  return r
 endfunction
 
 function! on_thing_handler#OnThingTagList(tag)
