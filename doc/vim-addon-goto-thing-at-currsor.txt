@@ -37,3 +37,13 @@ A very similar idea has been implemented in vim-addon-toggle-buffer. However
 its purpose is to toggle files by context. Examples are
 - C/C++ .h and .c files
 - Vim: find .vim files in the same plugin directory (eg toggle autoload and plugin .vim files)
+
+
+------------------------------------------------------------------------------
+related work ~
+  RSTO : Goto function (open/create) for ReStructured Text directives
+  http://www.vim.org/scripts/script.php?script_id=3810
+  note: author would be fine with merging both projects.
+  I don't have time to do so. vim-addon-goto-thing-at-cursor does not support
+  system comamnds (opening images) yet.
+  Don't have time right now :(
