@@ -9,15 +9,21 @@ fun! vim_addon_goto_thing_at_cursor#by_language#SETUP()
 endf
 
 fun! vim_addon_goto_thing_at_cursor#by_language#JS_LIKE_REQUIRE()
+
   let rel = matchstr(getline('.'), "require(['\"]\\zs[^'\"]*\\ze['\"])")
+  if rel == ""
+    let rel = matchstr(getline('.'), "import.*from \"\\zs[^\"]*\\ze\"")
+  endif
   if rel == "" | return [] | endif
   let r = []
-  for ext in ['.js', '.ts', '/index.js', '/index.ts']
+  for ext in ['', '.js', '.ts', '/index.js', '/index.ts']
     call add(r, expand('%:h').'/' . rel . ext)
   endfor
 
-  call extend(r, split(glob( 'node_modules/' . rel . '/index.js' ), "\n"))
-  call extend(r, split(glob( 'node_modules/' . rel . '/index.ts' ), "\n"))
+  for dir in split($NODE_MODULES, ':')+['.']
+    call extend(r, split(glob( dir.'/' . rel . '/index.js' ), "\n"))
+    call extend(r, split(glob( dir.'/' . rel . '/index.ts' ), "\n"))
+  endfor
   return map(r, 'expand(v:val)')
 endf
 

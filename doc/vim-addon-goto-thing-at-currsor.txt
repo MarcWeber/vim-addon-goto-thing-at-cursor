@@ -9,7 +9,7 @@ This plugin doesn't care whether a file exists or not (its biased if one exists 
 ------------------------------------------------------------------------------
 customization ~
 You can use another lhs of a mapping this way: >
-  let g['config']['goto-thing-handler-mapping-lhs'] = 'gf'
+  let g:vim_addon_goto_thing_at_cursor['goto-thing-handler-mapping-lhs'] = 'gf'
 >
 
 Adding your own handlers. Example vim files only:
@@ -47,3 +47,6 @@ related work ~
   I don't have time to do so. vim-addon-goto-thing-at-cursor does not support
   system comamnds (opening images) yet.
   Don't have time right now :(
+
+
+TODO: move into editor-cells?
